@@ -1,0 +1,5 @@
+{
+  "name": "CornerStats Pro",
+  "description": "Análise de probabilidades de escanteios para jogos de futebol usando dados históricos e a API da ESPN.",
+  "requestFramePermissions": []
+}
