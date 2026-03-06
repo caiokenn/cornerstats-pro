@@ -7,8 +7,9 @@ import React, { useState, useEffect } from 'react';
 import { DatePicker } from './components/DatePicker';
 import { MatchCard } from './components/MatchCard';
 import { LoginPage } from './components/LoginPage';
+import { CaioLogo } from './components/CaioLogo';
 import { fetchMatchesByDate, ESPNMatch } from './services/espn';
-import { LightningBolt, Trophy, WarningCircle, SyncIcon, LivePulse, AnalyticsChart } from './components/Icons';
+import { Trophy, WarningCircle, SyncIcon, LivePulse, AnalyticsChart } from './components/Icons';
 import { useAuth } from './contexts/AuthContext';
 import { isSameDay } from 'date-fns';
 import { motion, AnimatePresence } from 'motion/react';
@@ -93,17 +94,12 @@ export default function App() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 sm:h-[72px] flex items-center justify-between">
           <motion.div
-            className="flex items-center gap-2.5 sm:gap-3 cursor-pointer group"
+            className="cursor-pointer group flex items-center h-full"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            <img
-              src={`${import.meta.env.BASE_URL}assets/logo.png`}
-              alt="CAIO Consultoria Esportiva"
-              className="h-10 sm:h-12 w-auto object-contain drop-shadow-[0_0_10px_rgba(16,185,129,0.2)]"
-            />
+            <CaioLogo variant="horizontal" size="md" animated={false} />
           </motion.div>
-
           <div className="flex items-center gap-2.5 sm:gap-3">
             {lastUpdated && (
               <div className="hidden sm:flex items-center gap-2 text-[10px] text-slate-500 font-medium tabular-nums">

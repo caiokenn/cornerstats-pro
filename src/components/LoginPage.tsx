@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useAuth } from '../contexts/AuthContext';
-import { AnalyticsChart, LightningBolt } from './Icons';
+import { CaioLogo } from './CaioLogo';
+import { LightningBolt } from './Icons';
 
 export function LoginPage() {
     const { signIn, signUp } = useAuth();
@@ -90,15 +91,10 @@ export function LoginPage() {
                         initial={{ scale: 0, rotate: -180 }}
                         animate={{ scale: 1, rotate: 0 }}
                         transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.1 }}
-                        className="flex flex-col items-center mb-8"
+                        className="flex flex-col items-center mb-10 w-full"
                     >
-                        <img
-                            src={`${import.meta.env.BASE_URL}assets/logo.png`}
-                            alt="CAIO Consultoria Esportiva"
-                            className="h-28 sm:h-36 w-auto object-contain drop-shadow-[0_0_15px_rgba(16,185,129,0.15)]"
-                        />
+                        <CaioLogo variant="vertical" size="lg" animated={false} />
                     </motion.div>
-
                     {/* Title */}
                     <AnimatePresence mode="wait">
                         <motion.h2
