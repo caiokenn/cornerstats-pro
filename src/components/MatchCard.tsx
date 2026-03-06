@@ -355,8 +355,8 @@ export function MatchCard({ match }: MatchCardProps) {
 
   const handleShare = (e: React.MouseEvent, builder: BetBuilder) => {
     e.stopPropagation();
-    const text = `🔥 ${match.homeTeam.name} vs ${match.awayTeam.name}\n${builder.emoji} ${builder.label}\n` + builder.selections.map(s => `✅ ${s.title} (${s.probability.toFixed(0)}%)`).join('\n') + `\n📈 Prob: ${builder.totalProbability.toFixed(1)}%\nCornerStats Pro`;
-    if (navigator.share) { navigator.share({ title: 'CornerStats Pro', text, url: window.location.href }).catch(console.error); }
+    const text = `🔥 ${match.homeTeam.name} vs ${match.awayTeam.name}\n${builder.emoji} ${builder.label}\n` + builder.selections.map(s => `✅ ${s.title} (${s.probability.toFixed(0)}%)`).join('\n') + `\n📈 Prob: ${builder.totalProbability.toFixed(1)}%\nCAIO Consultoria Esportiva`;
+    if (navigator.share) { navigator.share({ title: 'CAIO Consultoria Esportiva', text, url: window.location.href }).catch(console.error); }
     else { navigator.clipboard.writeText(text); }
   };
 

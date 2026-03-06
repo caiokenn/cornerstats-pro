@@ -6,12 +6,15 @@
 import React, { useState, useEffect } from 'react';
 import { DatePicker } from './components/DatePicker';
 import { MatchCard } from './components/MatchCard';
+import { LoginPage } from './components/LoginPage';
 import { fetchMatchesByDate, ESPNMatch } from './services/espn';
 import { LightningBolt, Trophy, WarningCircle, SyncIcon, LivePulse, AnalyticsChart } from './components/Icons';
+import { useAuth } from './contexts/AuthContext';
 import { isSameDay } from 'date-fns';
 import { motion, AnimatePresence } from 'motion/react';
 
 export default function App() {
+  const { user, loading: authLoading, signOut } = useAuth();
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [matches, setMatches] = useState<ESPNMatch[]>([]);
   const [loading, setLoading] = useState(false);
@@ -19,6 +22,8 @@ export default function App() {
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
   useEffect(() => {
+    if (!user) return;
+
     let intervalId: NodeJS.Timeout;
     let isMounted = true;
 
@@ -50,7 +55,23 @@ export default function App() {
       isMounted = false;
       if (intervalId) clearInterval(intervalId);
     };
-  }, [selectedDate]);
+  }, [selectedDate, user]);
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-[#060a14] flex items-center justify-center">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+          className="w-12 h-12 rounded-full border-2 border-emerald-500 border-t-transparent shadow-[0_0_20px_rgba(16,185,129,0.3)]"
+        />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <LoginPage />;
+  }
 
   return (
     <div className="min-h-screen bg-[#060a14] relative overflow-hidden font-sans text-slate-100 selection:bg-emerald-500/30 selection:text-emerald-100">
@@ -76,18 +97,11 @@ export default function App() {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            <div className="relative">
-              <div className="absolute inset-0 bg-emerald-500 rounded-xl blur-xl opacity-25 group-hover:opacity-50 transition-opacity duration-700" />
-              <div className="relative bg-gradient-to-br from-emerald-500 via-emerald-600 to-teal-700 p-2 sm:p-2.5 rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.25)] group-hover:shadow-[0_0_35px_rgba(16,185,129,0.45)] transition-all duration-700 border border-emerald-400/15">
-                <AnalyticsChart size={20} className="text-white" />
-              </div>
-            </div>
-            <div className="flex flex-col justify-center">
-              <h1 className="text-lg sm:text-[22px] font-black text-white tracking-[-0.02em] leading-none">
-                Corner<span className="text-gradient-neon">Stats</span>
-              </h1>
-              <p className="text-[8px] sm:text-[9px] text-slate-600 font-bold tracking-[0.3em] uppercase mt-[1px]">Premium Analytics</p>
-            </div>
+            <img
+              src={`${import.meta.env.BASE_URL}assets/logo.png`}
+              alt="CAIO Consultoria Esportiva"
+              className="h-10 sm:h-12 w-auto object-contain drop-shadow-[0_0_10px_rgba(16,185,129,0.2)]"
+            />
           </motion.div>
 
           <div className="flex items-center gap-2.5 sm:gap-3">
@@ -104,10 +118,13 @@ export default function App() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-1.5 px-3.5 sm:px-5 py-1.5 sm:py-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold shadow-[0_0_20px_rgba(16,185,129,0.2)] hover:shadow-[0_0_35px_rgba(16,185,129,0.4)] transition-all duration-500 border border-emerald-400/15"
+              onClick={signOut}
+              className="flex items-center gap-1.5 px-3.5 sm:px-5 py-1.5 sm:py-2 bg-slate-800/80 hover:bg-slate-700/80 text-slate-300 hover:text-white rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium transition-all duration-300 border border-slate-700/50 hover:border-slate-600/50"
             >
-              <LivePulse size={13} className="text-emerald-200" />
-              <span>Pro</span>
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              <span>Sair</span>
             </motion.button>
           </div>
         </div>
@@ -222,7 +239,7 @@ export default function App() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-6 flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3">
           <div className="flex items-center gap-2">
             <AnalyticsChart size={13} className="text-emerald-600" />
-            <span className="text-[10px] sm:text-xs text-slate-700 font-medium">CornerStats Pro © {new Date().getFullYear()}</span>
+            <span className="text-[10px] sm:text-xs text-slate-700 font-medium">CAIO Consultoria Esportiva © {new Date().getFullYear()}</span>
           </div>
           <span className="text-[9px] sm:text-[10px] text-slate-800 font-medium tracking-[0.15em] uppercase">Powered by AI Analytics Engine</span>
         </div>
